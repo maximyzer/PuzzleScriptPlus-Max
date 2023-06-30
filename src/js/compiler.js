@@ -573,7 +573,14 @@ function levelsToArray(state) {
 			}
 			if(o.section != previousSection) {sectionTerminated = false; previousSection = o.section;}
 			if(sectionTerminated) logWarning('Message unreachable due to previous GOTO.', level[2]);
-		} else if (level[0] == 'goto') {
+		}  else if (level[0] == 'cmg') {
+			o = {
+				message: level[1],
+				lineNumber: level[2],
+				section: level[3],
+                type: level[0]
+			};
+		}else if (level[0] == 'goto') {
 			o = {
 				target: level[1],
 				lineNumber: level[2],
@@ -688,7 +695,7 @@ var simpleRelativeDirections = ['^', 'v', '<', '>'];
 var reg_directions_only = /^(\>|\<|\^|v|up|down|left|right|moving|stationary|no|randomdir|random|horizontal|vertical|orthogonal|perpendicular|parallel|action)$/i;
 //redeclaring here, i don't know why
 var commandwords = ["sfx0","sfx1","sfx2","sfx3","sfx4","sfx5","sfx6","sfx7","sfx8","sfx9","sfx10","cancel","checkpoint","restart","win","message","again","undo",
-  "nosave","quit","zoomscreen","flickscreen","smoothscreen","again_interval","realtime_interval","key_repeat_interval",'noundo','norestart','background_color','text_color','goto','message_text_align'];
+  "nosave","quit","zoomscreen","cmg","flickscreen","smoothscreen","again_interval","realtime_interval","key_repeat_interval",'noundo','norestart','background_color','text_color','goto','message_text_align'];
 function directionalRule(rule) {
     for (var i = 0; i < rule.lhs.length; i++) {
         var cellRow = rule.lhs[i];

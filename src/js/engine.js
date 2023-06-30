@@ -1,5 +1,5 @@
 var onLevelRestarted = new Event("levelRestarted");
-
+var currentLevelNumber = 0;
 var RandomGen = new RNG();
 
 var intro_template = [
@@ -794,12 +794,30 @@ function loadLevelFromLevelDat(state,leveldat,randomseed,clearinputhistory) {
   rightdragging = false;
   state.metadata = deepClone(state.default_metadata);
     againing=false;
+
     if (leveldat===undefined) {
     	consolePrint("Trying to access a level that doesn't exist.",true);
 		goToTitleScreen();
     	return;
     }
-    if (leveldat.message !== undefined) {
+	if(leveldat.type === "cmg") {
+		//this "level" is a call to the cmg API -- cmgapi
+		if (typeof parent.parent.cmgGameEvent === "function") { 
+			var cmgMessageSplit =  leveldat.message.split(" ");
+			if(cmgMessageSplit[0] == "startgame") {
+				parent.parent.cmgGameEvent("start");
+			} else if(cmgMessageSplit[0] == "startlevel") {
+				parent.parent.cmgGameEvent("start", cmgMessageSplit[1]);
+				currentLevelNumber = cmgMessageSplit[1];
+			}  else if(cmgMessageSplit[0] == "adbreak") {
+				parent.callCmgAdBreak();
+			} 
+		}
+
+		clearInputHistory();
+		nextLevel();
+	}
+	else if (leveldat.message !== undefined) {
       // This "level" is actually a message.
       ignoreNotJustPressedAction=true;
 	  tryPlayShowMessageSound();
@@ -1503,6 +1521,11 @@ function DoRestart(force) {
   
   twiddleMetadataExtras();
 	
+	//cmgapi - cmg api
+	if (typeof parent.parent.cmgGameEvent === "function") { 
+		parent.cmgGameEvent("replay",currentLevelNumber)
+	}
+
 	level.commandQueue=[];
 	level.commandQueueSourceRules=[];
 	restarting=false;

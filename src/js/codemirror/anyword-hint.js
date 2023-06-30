@@ -75,7 +75,7 @@
         var RULE_COMMAND_WORDS = [
             "COMMAND",
             "sfx0", "sfx1", "sfx2", "sfx3", "sfx4", "sfx5", "sfx6", "sfx7", "sfx8", "sfx9", "sfx10", "cancel", "checkpoint", "restart", "win", "message", "again", "nosave", "quit",
-            "global", "zoomscreen", "flickscreen", "smoothscreen", "key_repeat_interval", "again_interval", "realtime_interval", "background_color", "text_color", "noundo", "norestart", "goto", "undo", "message_text_align"];
+            "global", "zoomscreen", "cmg", "flickscreen", "smoothscreen", "key_repeat_interval", "again_interval", "realtime_interval", "background_color", "text_color", "noundo", "norestart", "goto", "undo", "message_text_align"];
 
         var CARDINAL_DIRECTION_WORDS = [
             "DIRECTION",
@@ -251,6 +251,7 @@
                             candlists.push(["MESSAGE_VERB","message"]);
                             candlists.push(["SECTION_VERB","section"]);
                             candlists.push(["GOTO_VERB"   ,"goto"   ]);
+                            candlists.push(["COOL_MATH_GAMES_VERB"   ,"cmg"   ]);
                         }
                         break;
                     }
