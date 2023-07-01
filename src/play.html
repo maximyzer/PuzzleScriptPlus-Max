@@ -281,41 +281,41 @@ function getData(){
 	// 	return;
 	// }
 
-    var result = []
-    fetch('./7segments.json').then(response => {
+    // var result = []
+    // fetch('./7segments.json').then(response => {
         
-        result = JSON.parse(response.json);
-        
-    }).then(
-        () => {
-            var code=result["files"]["script.txt"]["content"];
-            compile(["restart"],code); 
-        }
-    )
+    //     result = JSON.parse(response.json);
 
-	// var githubURL = './7segments.json';
-	// var githubHTTPClient = new XMLHttpRequest();
-	// githubHTTPClient.open('GET', githubURL);
-	// githubHTTPClient.onreadystatechange = function() {
-	// 	if(githubHTTPClient.readyState!=4) {
-	// 		return;
-	// 	}		
-	// 	var result = JSON.parse(githubHTTPClient.responseText);
-	// 	if (githubHTTPClient.status===403) {
-	// 		displayError(result.message);
-	// 	} else if (githubHTTPClient.status!==200&&githubHTTPClient.status!==201) {
-	// 		displayError("HTTP Error "+ githubHTTPClient.status + ' - ' + githubHTTPClient.statusText);
-	// 	}
-	// 	var result = JSON.parse(githubHTTPClient.responseText);
-	// 	var code=result["files"]["script.txt"]["content"];
-	// 	compile(["restart"],code);        
-	// }
-    // if (storage_has('oauth_access_token')) {
-    //     var oauthAccessToken = storage_get("oauth_access_token");
-    //     if (typeof oauthAccessToken === "string") {
-    //         githubHTTPClient.setRequestHeader("Authorization","token "+oauthAccessToken);
+    // }).then(
+    //     () => {
+    //         var code=result["files"]["script.txt"]["content"];
+    //         compile(["restart"],code); 
     //     }
-    // }
+    // )
+
+	var githubURL = './7segments.json';
+	var githubHTTPClient = new XMLHttpRequest();
+	githubHTTPClient.open('GET', githubURL);
+	githubHTTPClient.onreadystatechange = function() {
+		if(githubHTTPClient.readyState!=4) {
+			return;
+		}		
+		var result = JSON.parse(githubHTTPClient.responseText);
+		if (githubHTTPClient.status===403) {
+			displayError(result.message);
+		} else if (githubHTTPClient.status!==200&&githubHTTPClient.status!==201) {
+			displayError("HTTP Error "+ githubHTTPClient.status + ' - ' + githubHTTPClient.statusText);
+		}
+		var result = JSON.parse(githubHTTPClient.responseText);
+		var code=result["files"]["script.txt"]["content"];
+		compile(["restart"],code);        
+	}
+    if (storage_has('oauth_access_token')) {
+        var oauthAccessToken = storage_get("oauth_access_token");
+        if (typeof oauthAccessToken === "string") {
+            githubHTTPClient.setRequestHeader("Authorization","token "+oauthAccessToken);
+        }
+    }
 	// githubHTTPClient.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	// githubHTTPClient.send();
 }
