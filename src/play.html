@@ -235,16 +235,10 @@ a {
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 </head>
 <body>
-<div class="title"><h1 id="gametitle">PuzzleScript Game</h1></div>
 <div class="gameContainer">
 <canvas 
     id="gameCanvas" ></canvas>
 </div> 
-<div class="footer">
-<span id="errormessage" style="color:red;"></span>
-<a id="homepagelink" href="https://auroriax.github.io/PuzzleScript">Made with Puzzlescript Plus</a> <span id="separator">|</span> <a id="hacklink" href="#">hack</a>
-</div>
-
 <!--TOREPLACE-->
 <script src="js/storagewrapper.js"></script>
 <script src="js/globalVariables.js"></script>
@@ -266,8 +260,6 @@ a {
 <script>
 
 function displayError(message) {
-	var errorText = document.getElementById("errormessage");
-	errorText.innerHTML="ERROR "+message+"<br>";
 
 }
 function getParameterByName(name) {
@@ -283,62 +275,45 @@ function strip_http(url) {
 }
 
 function getData(){ 
-	var id = getParameterByName("p").replace(/[\\\/]/,"");
-	if (id===null||id.length===0) {
-		displayError("No ID specified in URL.")
-		return;
-	}
+	// var id = getParameterByName("p").replace(/[\\\/]/,"");
+	// if (id===null||id.length===0) {
+	// 	displayError("No ID specified in URL.")
+	// 	return;
+	// }
 
-	var githubURL = 'https://api.github.com/gists/'+id;
+    var result = []
+    fetch('./7segments.json').then(response => json = response.json()).then(
+        () => {
+            var code=result["files"]["script.txt"]["content"];
+            compile(["restart"],code); 
+        }
+    )
 
-	var githubHTTPClient = new XMLHttpRequest();
-	githubHTTPClient.open('GET', githubURL);
-	githubHTTPClient.onreadystatechange = function() {
-		if(githubHTTPClient.readyState!=4) {
-			return;
-		}		
-		var result = JSON.parse(githubHTTPClient.responseText);
-		if (githubHTTPClient.status===403) {
-			displayError(result.message);
-		} else if (githubHTTPClient.status!==200&&githubHTTPClient.status!==201) {
-			displayError("HTTP Error "+ githubHTTPClient.status + ' - ' + githubHTTPClient.statusText);
-		}
-		var result = JSON.parse(githubHTTPClient.responseText);
-		var code=result["files"]["script.txt"]["content"];
-		compile(["restart"],code);
-
-		if (state.metadata.homepage!==undefined) {
-			var homepage=state.metadata.homepage;
-			var homepageLink = document.getElementById("homepagelink");
-			homepageLink.innerHTML=strip_http(homepage);
- 			if (!homepage.match(/^https?:\/\//)) {
- 				homepage = "https://" + homepage;
- 			}
- 			homepageLink.href = homepage;
-		}
-		if (state.metadata.title!==undefined) {
-			var title=state.metadata.title;
-			var gametitle = document.getElementById("gametitle");
-			gametitle.innerHTML=title;
-			window.document.title=title+" - PuzzleScript Game";
-		}
-                
-		var hacklink = document.getElementById("hacklink");
-
-		var url = "editor.html?hack="+id;
-		url=qualifyURL(url);
-
-		hacklink.href=url;
-        
-	}
+	// var githubURL = './7segments.json';
+	// var githubHTTPClient = new XMLHttpRequest();
+	// githubHTTPClient.open('GET', githubURL);
+	// githubHTTPClient.onreadystatechange = function() {
+	// 	if(githubHTTPClient.readyState!=4) {
+	// 		return;
+	// 	}		
+	// 	var result = JSON.parse(githubHTTPClient.responseText);
+	// 	if (githubHTTPClient.status===403) {
+	// 		displayError(result.message);
+	// 	} else if (githubHTTPClient.status!==200&&githubHTTPClient.status!==201) {
+	// 		displayError("HTTP Error "+ githubHTTPClient.status + ' - ' + githubHTTPClient.statusText);
+	// 	}
+	// 	var result = JSON.parse(githubHTTPClient.responseText);
+	// 	var code=result["files"]["script.txt"]["content"];
+	// 	compile(["restart"],code);        
+	// }
     // if (storage_has('oauth_access_token')) {
     //     var oauthAccessToken = storage_get("oauth_access_token");
     //     if (typeof oauthAccessToken === "string") {
     //         githubHTTPClient.setRequestHeader("Authorization","token "+oauthAccessToken);
     //     }
     // }
-	githubHTTPClient.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	githubHTTPClient.send();
+	// githubHTTPClient.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	// githubHTTPClient.send();
 }
 
 getData();
