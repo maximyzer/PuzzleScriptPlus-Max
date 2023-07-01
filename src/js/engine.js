@@ -1523,7 +1523,7 @@ function DoRestart(force) {
 	
 	//cmgapi - cmg api
 	if (typeof parent.parent.cmgGameEvent === "function") { 
-		parent.cmgGameEvent("replay",currentLevelNumber)
+		parent.parent.cmgGameEvent("replay",currentLevelNumber)
 	}
 
 	level.commandQueue=[];
