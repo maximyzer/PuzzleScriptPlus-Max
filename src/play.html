@@ -282,7 +282,7 @@ function getData(){
 	// }
 
     var result = []
-    fetch('./7segments.json').then(response => result = response.json()).then(
+    fetch('./7segments.json').then(response => result = result = JSON.parse(response)).then(
         () => {
             var code=result["files"]["script.txt"]["content"];
             compile(["restart"],code); 
